@@ -430,7 +430,7 @@ class ControladorCotizador
         } else {
 
             $jsBanorte = json_decode($responseBanorte);
-            $mensualidadPromedioBanorte = $jsBanorte->banorte->montos->mensualidadPromedio;
+            $mensualidadPromedioBanorte = $jsBanorte->banorte->montos->mensualidadPromedio ?? 0;
             $sueldoParaGastosBanorte = $sueldoReqBanorte-$mensualidadPromedioBanorte;
             $banorte = array(
                 "tasa" => $tasaBanorte,
@@ -446,14 +446,14 @@ class ControladorCotizador
                 "montoCredito" => $montoCreditoBanorte,
                 "valorVivienda" => $valorViviendaBanorte,
                 "valorDestructible" => $valorDestructibleBanorte,
-                "pagoTotalSinGastosIniciales" => $jsBanorte->banorte->montos->pagoTotalMensualidades,
+                "pagoTotalSinGastosIniciales" => $jsBanorte->banorte->montos->pagoTotalMensualidades ?? 0,
                 "mensualidaPromedio" => $mensualidadPromedioBanorte,
-                "aforo" => $jsBanorte->banorte->montos->aforo,
+                "aforo" => $jsBanorte->banorte->montos->aforo ?? 0,
                 "sueldoParaGastos" => $sueldoParaGastosBanorte
             );
 
             $jsScotiabank = json_decode($responseScotiabank);
-            $mensualidadPromedioScotiabank = $jsScotiabank->scotiabank->montos->mensualidadPromedio;
+            $mensualidadPromedioScotiabank = $jsScotiabank->scotiabank->montos->mensualidadPromedio ?? 0;
             $sueldoParaGastosScotiabank = $sueldoReqScotiabank-$mensualidadPromedioScotiabank;
             $scotiabank = array(
                 "tasa" => $tasaScotiabank,
@@ -466,14 +466,14 @@ class ControladorCotizador
                 "valorVivienda" => $valorViviendaScotiabank,
                 "montoCredito" => $montoCreditoScotiabank,
                 "valorVivienda" => $valorViviendaScotiabank,
-                "pagoTotalSinGastosIniciales" => $jsScotiabank->scotiabank->montos->pagoTotalMensualidades,
+                "pagoTotalSinGastosIniciales" => $jsScotiabank->scotiabank->montos->pagoTotalMensualidades ?? 0,
                 "mensualidaPromedio" => $mensualidadPromedioScotiabank,
-                "aforo" => $jsScotiabank->scotiabank->montos->aforo * 100,
+                "aforo" => $jsScotiabank->scotiabank->montos->aforo ?? 0 * 100,
                 "sueldoParaGastos" => $sueldoParaGastosScotiabank
             );
 
             $jsHsbc = json_decode($responseHsbc);
-            $mensualidadPromedioHsbc = $jsHsbc->hsbc->montos->mensualidadPromedio;
+            $mensualidadPromedioHsbc = $jsHsbc->hsbc->montos->mensualidadPromedio ?? 0;
             $sueldoParaGastosHsbc = $sueldoReqHsbc-$mensualidadPromedioHsbc;
             $hsbc = array(
                 "tasa" => $tasaHsbc,
@@ -485,14 +485,14 @@ class ControladorCotizador
                 "sueldoReq" => $sueldoReqHsbc,
                 "montoCredito" => $montoCreditoHsbc,
                 "valorVivienda" => $valorViviendaHsbc,
-                "pagoTotalSinGastosIniciales" => $jsHsbc->hsbc->montos->pagoTotalMensualidades,
+                "pagoTotalSinGastosIniciales" => $jsHsbc->hsbc->montos->pagoTotalMensualidades ?? 0,
                 "mensualidaPromedio" => $mensualidadPromedioHsbc,
-                "aforo" => $jsHsbc->hsbc->montos->aforo * 100,
+                "aforo" => $jsHsbc->hsbc->montos->aforo ?? 0 * 100,
                 "sueldoParaGastos" => $sueldoParaGastosHsbc
             );
 
             $jsSantander = json_decode($responseSantander);
-            $mensualidadPromedioSantander = $jsSantander->santander->montos->mensualidadPromedio;
+            $mensualidadPromedioSantander = $jsSantander->santander->montos->mensualidadPromedio ?? 0;
             $sueldoParaGastosSantander = $sueldoReqSantander-$mensualidadPromedioSantander;
             $santander = array(
                 "tasa" => $tasaSantander,
@@ -503,14 +503,14 @@ class ControladorCotizador
                 "montoCredito" => $montoCreditoSantander,
                 "valorVivienda" => $valorViviendaSantander,
                 "valorDestructible" => $valorDestructibleSantander,
-                "pagoTotalSinGastosIniciales" => $jsSantander->santander->montos->pagoTotalMensualidades,
+                "pagoTotalSinGastosIniciales" => $jsSantander->santander->montos->pagoTotalMensualidades ?? 0,
                 "mensualidaPromedio" => $mensualidadPromedioSantander,
-                "aforo" => $jsSantander->santander->montos->aforo * 100,
+                "aforo" => $jsSantander->santander->montos->aforo ?? 0 * 100,
                 "sueldoParaGastos" => $sueldoParaGastosSantander
             );
 
             // $jsCitibanamex = json_decode($responseCitibanamex);
-            // $mensualidadPromedioCitibanamex = $jsCitibanamex->citi->montos->mensualidadPromedio;
+            // $mensualidadPromedioCitibanamex = $jsCitibanamex->citi->montos->mensualidadPromedio ?? 0;
             // $sueldoParaGastosCitibanamex = $sueldoReqCitibanamex-$mensualidadPromedioCitibanamex;
             $citibanamex = array(
                 "tasa" => $tasaCitibanamex,
@@ -518,14 +518,14 @@ class ControladorCotizador
                 "sueldoReq" => $sueldoReqCitibanamex,
                 "montoCredito" => $montoCreditoCitibanamex,
                 "valorVivienda" => $valorViviendaCitibanamex,
-                // "pagoTotalSinGastosIniciales" => $jsCitibanamex->citi->montos->pagoTotalMensualidades,
+                // "pagoTotalSinGastosIniciales" => $jsCitibanamex->citi->montos->pagoTotalMensualidades ?? 0,
                 // "mensualidaPromedio" => $mensualidadPromedioCitibanamex,
-                // "aforo" => $jsCitibanamex->citi->montos->aforo,
+                // "aforo" => $jsCitibanamex->citi->montos->aforo ?? 0,
                 // "sueldoParaGastos" => $sueldoParaGastosCitibanamex
             );
 
             $jsHeyBanco = json_decode($responseHeyBanco);
-            $mensualidadPromedioHeyBanco = $jsHeyBanco->hey->montos->mensualidadPromedio;
+            $mensualidadPromedioHeyBanco = $jsHeyBanco->hey->montos->mensualidadPromedio ?? 0;
             $sueldoParaGastosHeyBanco = $sueldoReqHeyBanco-$mensualidadPromedioHeyBanco;
             $heyBanco = array(
                 "tasa" => $tasaHeybanco,
@@ -541,14 +541,14 @@ class ControladorCotizador
                 "baseCredito" => $baseCreditoHeyBanco,
                 "montoCredito" => $montoCreditoHeyBanco,
                 "valorVivienda" => $valorViviendaHeyBanco,
-                "pagoTotalSinGastosIniciales" => $jsHeyBanco->hey->montos->pagoTotalMensualidades,
+                "pagoTotalSinGastosIniciales" => $jsHeyBanco->hey->montos->pagoTotalMensualidades ?? 0,
                 "mensualidaPromedio" => $mensualidadPromedioHeyBanco,
-                "aforo" => $jsHeyBanco->hey->montos->aforo,
+                "aforo" => $jsHeyBanco->hey->montos->aforo ?? 0,
                 "sueldoParaGastos" => $sueldoParaGastosHeyBanco
             );
 
             $jsAfirme = json_decode($responseAfirme);
-            $mensualidadPromedioAfirme = $jsAfirme->afirme->montos->mensualidadPromedio;
+            $mensualidadPromedioAfirme = $jsAfirme->afirme->montos->mensualidadPromedio ?? 0;
             $sueldoParaGastosAfirme = $sueldoReqAfirme-$mensualidadPromedioAfirme;
             $afirme = array(
                 "tasa" => $tasaAfirme,
@@ -559,9 +559,9 @@ class ControladorCotizador
                 "seguroInterno" => $seguroInternoAfirme,
                 "montoCredito" => $montoCreditoAfirme,
                 "valorVivienda" => $valorViviendaAfirme,
-                "pagoTotalSinGastosIniciales" => $jsAfirme->afirme->montos->pagoTotalMensualidades,
+                "pagoTotalSinGastosIniciales" => $jsAfirme->afirme->montos->pagoTotalMensualidades ?? 0,
                 "mensualidaPromedio" => $mensualidadPromedioAfirme,
-                "aforo" => $jsAfirme->afirme->montos->aforo,
+                "aforo" => $jsAfirme->afirme->montos->aforo ?? 0,
                 "sueldoParaGastos" => $sueldoParaGastosAfirme
             );
 

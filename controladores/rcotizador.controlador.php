@@ -34,7 +34,7 @@ class ControladorCotizador
 
         $tasaScotiabank = 11.8;
 
-        // $tasaHsbc = 10.75; //Se calcula en el codigo
+        $tasaHsbc = 10.75; //Se calcula en el codigo
         $comisionHsbc = 250;
 
         $tasaSantander = 11.55;

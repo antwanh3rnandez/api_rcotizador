@@ -7,7 +7,7 @@ class OpinionDeValor{
         $casaInput = json_decode($inputArr, true);
 
         if (!isset($casaInput['direccion']) || !isset($casaInput['latitud']) || !isset($casaInput['longitud'])) {
-            return null;
+            return 'Error: Faltan campos obligatorios';
         }
 
         $casa = array(
@@ -41,13 +41,34 @@ class OpinionDeValor{
             "longitud" =>  $casaInput['longitud'],
         );
 
+        $idUsuario = (isset($casaInput['idUsuario'])) ? intval($casaInput['idUsuario']) : intval(0);
+        $idOrganizacion = (isset($casaInput['idOrganizacion'])) ? intval($casaInput['idOrganizacion']) : intval(0);
+
         try {
             $opinion = new OpinionDeValorTranscription();
             $opinion = $opinion->main($casa);
-            return $opinion;
+            // return $opinion;
         } catch (\Throwable $th) {
             return 'Error: '. $th;
         }
+
+        $pdo = Conexion::conectar();
+        $stmt = $pdo->prepare("INSERT INTO opiniones (user_id, organization_id, request, response) VALUES (:user_id, :organization_id, :request, :response)");
+        $stmt->bindParam(":user_id", $idUsuario, PDO::PARAM_INT);
+        $stmt->bindParam(":organization_id", $idOrganizacion, PDO::PARAM_INT);
+        $stmt->bindParam(":request", $inputArr, PDO::PARAM_STR);
+        $stmt->bindParam(":response", json_encode($opinion), PDO::PARAM_STR);
+
+        try {
+            $stmt->execute();
+            $idOpinion = $pdo->lastInsertId();
+        } catch (\Throwable $th) {
+            return 'Error: '. $th;
+        }
+
+        $result = array_merge($opinion, array("idOpinion" => intval($idOpinion)));
+
+        return $result;
 
     }
 
@@ -155,7 +176,7 @@ class OpinionDeValorTranscription
         $queryLatitud = "(latitud <= (" . $latitud . " + 0.008) AND latitud >= (" . $latitud . " - 0.008)) OR";
         $queryLongitud = "(longitud <= (" . $longitud . " + 0.008) AND longitud >= (" . $longitud . " - 0.008))";
         $pdo = Conexion::conectar();
-        $stmt = $pdo->prepare("SELECT colonia, monto, latitud, longitud $queryDistancia FROM nuevo_leon WHERE $queryLatitud $queryLongitud ORDER BY $sort $order LIMIT $offset,$perPage");
+        $stmt = $pdo->prepare("SELECT colonia, monto, latitud, longitud $queryDistancia FROM catastro WHERE $queryLatitud $queryLongitud ORDER BY $sort $order LIMIT $offset,$perPage");
         $stmt->execute();
         $terreno = $stmt->fetch(PDO::FETCH_ASSOC);
 

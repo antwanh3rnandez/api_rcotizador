@@ -30,12 +30,12 @@ if (true) {
     define('SERVIDOR', 'localhost');
     define('USUARIO', 'root');
     define('PASSWORD', '');
-    define('BD', 'toicommx_inmobiliaria');
+    define('BD', 'opinion');
 } else {
-    define('SERVIDOR', 'localhost');
-    define('USUARIO', 'toicommx_innovacion');
-    define('PASSWORD', '141621.Dj#');
-    define('BD', 'reclutamiento');
+    define('SERVIDOR', 'db5012952258.hosting-data.io');
+    define('USUARIO', 'dbu2917609');
+    define('PASSWORD', '6QNtt!FQEh7ca8PAa4RCnlx2!t');
+    define('BD', 'dbs10876777');
 }
 
 if (isset($uri)) {

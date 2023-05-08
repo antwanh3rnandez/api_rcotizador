@@ -8,6 +8,7 @@ class ControladorCotizador
 {
     public static function ctrRecibirDatos($json)
     {
+        $apiEndpoint = 'https://pruebacliente.toi.com.mx/comparativo/cliente';
         $data = json_decode($json, true);
 
         /**
@@ -311,7 +312,7 @@ class ControladorCotizador
 
         $curlBanorte = curl_init();
         curl_setopt_array($curlBanorte, [
-            CURLOPT_URL => "https://pruebacliente.toi.com.mx/comparativo/cliente?fechaNacimiento=1970-01-01&producto=0&plazo=". $data['montos']['plazo']/12 ."&valorVivienda=".$valorViviendaBanorte."&valorProyecto=&valorViviendaAdicional=&porcentajeNotarial=6&tipoTaza=2&sueldo=".$sueldoReqBanorte."&subcuenta=&infonavit=&montoCredito=".$montoCreditoBanorte."&estado=TLAXCALA&pagos=0&terreno=&construccion=&adeudoActual=&importeCredito=0&presupuestoRemodelacion=",
+            CURLOPT_URL => $apiEndpoint."?fechaNacimiento=1970-01-01&producto=0&plazo=". $data['montos']['plazo']/12 ."&valorVivienda=".$valorViviendaBanorte."&valorProyecto=&valorViviendaAdicional=&porcentajeNotarial=6&tipoTaza=2&sueldo=".$sueldoReqBanorte."&subcuenta=&infonavit=&montoCredito=".$montoCreditoBanorte."&estado=TLAXCALA&pagos=0&terreno=&construccion=&adeudoActual=&importeCredito=0&presupuestoRemodelacion=",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -326,7 +327,7 @@ class ControladorCotizador
 
         $curlScotiabank = curl_init();
         curl_setopt_array($curlScotiabank, [
-            CURLOPT_URL => "https://pruebacliente.toi.com.mx/comparativo/cliente?fechaNacimiento=1970-01-01&producto=0&plazo=". $data['montos']['plazo']/12 ."&valorVivienda=".$valorViviendaScotiabank."&valorProyecto=&valorViviendaAdicional=&porcentajeNotarial=6&tipoTaza=2&sueldo=".$sueldoReqScotiabank."&subcuenta=&infonavit=&montoCredito=".$montoCreditoScotiabank."&estado=TLAXCALA&pagos=0&terreno=&construccion=&adeudoActual=&importeCredito=0&presupuestoRemodelacion=",
+            CURLOPT_URL => $apiEndpoint."?fechaNacimiento=1970-01-01&producto=0&plazo=". $data['montos']['plazo']/12 ."&valorVivienda=".$valorViviendaScotiabank."&valorProyecto=&valorViviendaAdicional=&porcentajeNotarial=6&tipoTaza=2&sueldo=".$sueldoReqScotiabank."&subcuenta=&infonavit=&montoCredito=".$montoCreditoScotiabank."&estado=TLAXCALA&pagos=0&terreno=&construccion=&adeudoActual=&importeCredito=0&presupuestoRemodelacion=",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -341,7 +342,7 @@ class ControladorCotizador
 
         $curlHsbc = curl_init();
         curl_setopt_array($curlHsbc, [
-            CURLOPT_URL => "https://pruebacliente.toi.com.mx/comparativo/cliente?fechaNacimiento=1970-01-01&producto=0&plazo=". $data['montos']['plazo']/12 ."&valorVivienda=".$valorViviendaHsbc."&valorProyecto=&valorViviendaAdicional=&porcentajeNotarial=6&tipoTaza=2&sueldo=".$sueldoReqHsbc."&subcuenta=&infonavit=&montoCredito=".$montoCreditoHsbc."&estado=TLAXCALA&pagos=0&terreno=&construccion=&adeudoActual=&importeCredito=0&presupuestoRemodelacion=",
+            CURLOPT_URL => $apiEndpoint."?fechaNacimiento=1970-01-01&producto=0&plazo=". $data['montos']['plazo']/12 ."&valorVivienda=".$valorViviendaHsbc."&valorProyecto=&valorViviendaAdicional=&porcentajeNotarial=6&tipoTaza=2&sueldo=".$sueldoReqHsbc."&subcuenta=&infonavit=&montoCredito=".$montoCreditoHsbc."&estado=TLAXCALA&pagos=0&terreno=&construccion=&adeudoActual=&importeCredito=0&presupuestoRemodelacion=",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -356,7 +357,7 @@ class ControladorCotizador
 
         $curlSantander = curl_init();
         curl_setopt_array($curlSantander, [
-            CURLOPT_URL => "https://pruebacliente.toi.com.mx/comparativo/cliente?fechaNacimiento=1970-01-01&producto=0&plazo=". $data['montos']['plazo']/12 ."&valorVivienda=".$valorViviendaSantander."&valorProyecto=&valorViviendaAdicional=&porcentajeNotarial=6&tipoTaza=2&sueldo=".$sueldoReqSantander."&subcuenta=&infonavit=&montoCredito=".$montoCreditoSantander."&estado=TLAXCALA&pagos=0&terreno=&construccion=&adeudoActual=&importeCredito=0&presupuestoRemodelacion=",
+            CURLOPT_URL => $apiEndpoint."?fechaNacimiento=1970-01-01&producto=0&plazo=". $data['montos']['plazo']/12 ."&valorVivienda=".$valorViviendaSantander."&valorProyecto=&valorViviendaAdicional=&porcentajeNotarial=6&tipoTaza=2&sueldo=".$sueldoReqSantander."&subcuenta=&infonavit=&montoCredito=".$montoCreditoSantander."&estado=TLAXCALA&pagos=0&terreno=&construccion=&adeudoActual=&importeCredito=0&presupuestoRemodelacion=",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -374,7 +375,7 @@ class ControladorCotizador
          */
         // $curlCitibanamex = curl_init();
         // curl_setopt_array($curlCitibanamex, [
-        //     CURLOPT_URL => "https://pruebacliente.toi.com.mx/comparativo/cliente?fechaNacimiento=1970-01-01&producto=0&plazo=". $data['montos']['plazo']/12 ."&valorVivienda=".$valorViviendaCitibanamex."&valorProyecto=&valorViviendaAdicional=&porcentajeNotarial=6&tipoTaza=2&sueldo=".$sueldoReqCitibanamex."&subcuenta=&infonavit=&montoCredito=".$montoCreditoCitibanamex."&estado=TLAXCALA&pagos=0&terreno=&construccion=&adeudoActual=&importeCredito=0&presupuestoRemodelacion=",
+        //     CURLOPT_URL => $apiEndpoint."?fechaNacimiento=1970-01-01&producto=0&plazo=". $data['montos']['plazo']/12 ."&valorVivienda=".$valorViviendaCitibanamex."&valorProyecto=&valorViviendaAdicional=&porcentajeNotarial=6&tipoTaza=2&sueldo=".$sueldoReqCitibanamex."&subcuenta=&infonavit=&montoCredito=".$montoCreditoCitibanamex."&estado=TLAXCALA&pagos=0&terreno=&construccion=&adeudoActual=&importeCredito=0&presupuestoRemodelacion=",
         //     CURLOPT_RETURNTRANSFER => true,
         //     CURLOPT_ENCODING => "",
         //     CURLOPT_MAXREDIRS => 10,
@@ -389,7 +390,7 @@ class ControladorCotizador
 
         $curlHeyBanco = curl_init();
         curl_setopt_array($curlHeyBanco, [
-            CURLOPT_URL => "https://pruebacliente.toi.com.mx/comparativo/cliente?fechaNacimiento=1970-01-01&producto=0&plazo=". $data['montos']['plazo']/12 ."&valorVivienda=".$valorViviendaHeyBanco."&valorProyecto=&valorViviendaAdicional=&porcentajeNotarial=6&tipoTaza=2&sueldo=".$sueldoReqHeyBanco."&subcuenta=&infonavit=&montoCredito=".$montoCreditoHeyBanco."&estado=TLAXCALA&pagos=0&terreno=&construccion=&adeudoActual=&importeCredito=0&presupuestoRemodelacion=",
+            CURLOPT_URL => $apiEndpoint."?fechaNacimiento=1970-01-01&producto=0&plazo=". $data['montos']['plazo']/12 ."&valorVivienda=".$valorViviendaHeyBanco."&valorProyecto=&valorViviendaAdicional=&porcentajeNotarial=6&tipoTaza=2&sueldo=".$sueldoReqHeyBanco."&subcuenta=&infonavit=&montoCredito=".$montoCreditoHeyBanco."&estado=TLAXCALA&pagos=0&terreno=&construccion=&adeudoActual=&importeCredito=0&presupuestoRemodelacion=",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -404,7 +405,7 @@ class ControladorCotizador
 
         $curlAfirme = curl_init();
         curl_setopt_array($curlAfirme, [
-            CURLOPT_URL => "https://pruebacliente.toi.com.mx/comparativo/cliente?fechaNacimiento=1970-01-01&producto=0&plazo=". $data['montos']['plazo']/12 ."&valorVivienda=".$valorViviendaAfirme."&valorProyecto=&valorViviendaAdicional=&porcentajeNotarial=6&tipoTaza=2&sueldo=".$sueldoReqAfirme."&subcuenta=&infonavit=&montoCredito=".$montoCreditoAfirme."&estado=TLAXCALA&pagos=0&terreno=&construccion=&adeudoActual=&importeCredito=0&presupuestoRemodelacion=",
+            CURLOPT_URL => $apiEndpoint."?fechaNacimiento=1970-01-01&producto=0&plazo=". $data['montos']['plazo']/12 ."&valorVivienda=".$valorViviendaAfirme."&valorProyecto=&valorViviendaAdicional=&porcentajeNotarial=6&tipoTaza=2&sueldo=".$sueldoReqAfirme."&subcuenta=&infonavit=&montoCredito=".$montoCreditoAfirme."&estado=TLAXCALA&pagos=0&terreno=&construccion=&adeudoActual=&importeCredito=0&presupuestoRemodelacion=",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,

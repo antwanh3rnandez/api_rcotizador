@@ -5,11 +5,9 @@ class OpinionDeValor{
     public static function generateOpinon($inputArr)
     {
         $casaInput = json_decode($inputArr, true);
-
-        if (!isset($casaInput['direccion']) || !isset($casaInput['latitud']) || !isset($casaInput['longitud'])) {
+        if (!isset($casaInput['calle']) || !isset($casaInput['latitud']) || !isset($casaInput['longitud'])) {
             return 'Error: Faltan campos obligatorios';
         }
-
         $casa = array(
             "calle" => $casaInput['calle'],
             "colonia" => $casaInput['colonia'],
@@ -19,23 +17,23 @@ class OpinionDeValor{
             "caracteristicas" => array(
                 "tipo" => $casaInput['tipo'],
                 "cuartos" => $casaInput['cuartos'],
-                "banios" => $casaInput['banios'],
-                "mediosBanios" => $casaInput['mediosBanios'],
+                "banios" => $casaInput['banos'],
+                "mediosBanios" => $casaInput['mediosBanos'],
                 "estacionamientos" => $casaInput['estacionamientos'],
-                "metrosConstruccion" => $casaInput['metrosConstruccion'],
-                "metrosTerreno" => $casaInput['metrosTerreno'],
+                "metrosConstruccion" => $casaInput['construccion'],
+                "metrosTerreno" => $casaInput['terreno'],
                 "antiguedad" => $casaInput['antiguedad'],
-                "estado" => $casaInput['estadoCasa'],
+                "estado" => $casaInput['estadoPropiedad'],
             ),
             "amenidades" => array(
-                "seguridadPrivada" => (isset($casaInput['seguridadPrivada']) && $casaInput['seguridadPrivada'] == "on") ? "si" : "no",
-                "amueblado" => (isset($casaInput['amueblado']) && $casaInput['amueblado'] == "on") ? "si" : "no",
-                "cocinaIntegral" => (isset($casaInput['cocinaIntegral']) && $casaInput['cocinaIntegral'] == "on") ? "si" : "no",
-                "alberca" => (isset($casaInput['alberca']) && $casaInput['alberca'] == "on") ? "si" : "no",
-                "aireAcondicionado" => (isset($casaInput['aireAcondicionado']) && $casaInput['aireAcondicionado'] == "on") ? "si" : "no",
-                "jardin" => (isset($casaInput['jardin']) && $casaInput['jardin'] == "on") ? "si" : "no",
-                "gimnasio" => (isset($casaInput['gimnasio']) && $casaInput['gimnasio'] == "on") ? "si" : "no",
-                "cuartoDeServicio" => (isset($casaInput['cuartoDeServicio']) && $casaInput['cuartoDeServicio'] == "on") ? "si" : "no",
+                "seguridadPrivada" => (isset($casaInput['seguridadPrivada']) && $casaInput['seguridadPrivada'] == "true") ? "si" : "no",
+                "amueblado" => (isset($casaInput['amueblado']) && $casaInput['amueblado'] == "true") ? "si" : "no",
+                "cocinaIntegral" => (isset($casaInput['cocinaIntegral']) && $casaInput['cocinaIntegral'] == "true") ? "si" : "no",
+                "alberca" => (isset($casaInput['alberca']) && $casaInput['alberca'] == "true") ? "si" : "no",
+                "aireAcondicionado" => (isset($casaInput['aireAcondicionado']) && $casaInput['aireAcondicionado'] == "true") ? "si" : "no",
+                "jardin" => (isset($casaInput['jardin']) && $casaInput['jardin'] == "true") ? "si" : "no",
+                "gimnasio" => (isset($casaInput['gimnasio']) && $casaInput['gimnasio'] == "true") ? "si" : "no",
+                "cuartoDeServicio" => (isset($casaInput['cuartoDeServicio']) && $casaInput['cuartoDeServicio'] == "true") ? "si" : "no",
             ),
             "latitud" => $casaInput['latitud'],
             "longitud" =>  $casaInput['longitud'],
@@ -47,17 +45,16 @@ class OpinionDeValor{
         try {
             $opinion = new OpinionDeValorTranscription();
             $opinion = $opinion->main($casa);
-            // return $opinion;
         } catch (\Throwable $th) {
             return 'Error: '. $th;
         }
-
+        $responseJson = json_encode($opinion);
         $pdo = Conexion::conectar();
         $stmt = $pdo->prepare("INSERT INTO opiniones (user_id, organization_id, request, response) VALUES (:user_id, :organization_id, :request, :response)");
         $stmt->bindParam(":user_id", $idUsuario, PDO::PARAM_INT);
         $stmt->bindParam(":organization_id", $idOrganizacion, PDO::PARAM_INT);
         $stmt->bindParam(":request", $inputArr, PDO::PARAM_STR);
-        $stmt->bindParam(":response", json_encode($opinion), PDO::PARAM_STR);
+        $stmt->bindParam(":response", $responseJson, PDO::PARAM_STR);
 
         try {
             $stmt->execute();
@@ -72,6 +69,24 @@ class OpinionDeValor{
 
     }
 
+    public static function getOpinion($idOpinion)
+    {
+
+        $pdo = Conexion::conectar();
+        $stmt = $pdo->prepare("SELECT * FROM opiniones WHERE id = :id");
+        $stmt->bindParam(":id", $idOpinion, PDO::PARAM_INT);
+        $stmt->execute();
+        $opinion = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$opinion) {
+            return 'Error: No se encontro la opinion';
+        }
+        $opinion['request'] = json_decode($opinion['request'], true);
+        $opinion['response'] = json_decode($opinion['response'], true);
+        return $opinion;
+
+    }
+
 }
 
 class OpinionDeValorTranscription
@@ -79,71 +94,7 @@ class OpinionDeValorTranscription
 
     public function main($casa)
     {
-        // Datos de la casa
-        // $casa = array(
-        //     "calle" => "Av. Dr. José Narro Robles 845",
-        //     "colonia" => "Los González",
-        //     "municipio" => "Saltillo",
-        //     "estado" => "Coahuila",
-        //     "direccion" => "Av. Dr. José Narro Robles 845, Los González, Saltillo, Coahuila",
-        //     "caracteristicas" => array(
-        //         "tipo" => "Casa",
-        //         "cuartos" => 3,
-        //         "banios" => 3,
-        //         "mediosBanios" => 1,
-        //         "estacionamientos" => 2,
-        //         "metrosConstruccion" => 390,
-        //         "metrosTerreno" => 504,
-        //         "antiguedad" => 0,
-        //         "estado" => "muy bueno",
-        //     ),
-        //     "amenidades" => array(
-        //         "seguridadPrivada" => "si",
-        //         "amueblado" => "no",
-        //         "cocinaIntegral" => "si",
-        //         "alberca" => "si",
-        //         "aireAcondicionado" => "no",
-        //         "jardin" => "si",
-        //         "gimnasio" => "no",
-        //         "cuartoDeServicio" => "si",
-        //     ),
-        //     "latitud" => 25.475167,
-        //     "longitud" => -100.951960,
-        // );
 
-        // $casa = array(
-        //     "calle" => "Av. Dr. José Narro Robles 845",
-        //     "colonia" => "Los González",
-        //     "municipio" => "Saltillo",
-        //     "estado" => "Coahuila",
-        //     "direccion" => "Av. Dr. José Narro Robles 845, Los González, Saltillo, Coahuila",
-        //     "caracteristicas" => array(
-        //         "tipo" => "Casa",
-        //         "cuartos" => 3,
-        //         "banios" => 1,
-        //         "mediosBanios" => 1,
-        //         "estacionamientos" => 2,
-        //         "metrosConstruccion" => 180,
-        //         "metrosTerreno" => 150,
-        //         "antiguedad" => 17,
-        //         "estado" => "muy bueno",
-        //     ),
-        //     "amenidades" => array(
-        //         "seguridadPrivada" => "si",
-        //         "amueblado" => "si",
-        //         "cocinaIntegral" => "si",
-        //         "alberca" => "no",
-        //         "aireAcondicionado" => "si",
-        //         "jardin" => "no",
-        //         "gimnasio" => "no",
-        //         "cuartoDeServicio" => "si",
-        //     ),
-        //     "latitud" => 25.693649,
-        //     "longitud" =>  -100.502019,
-        // );
-
-        // Primera consulta
-        // ../manychat-api/bigdatachido/inmuebles?page=1&per_page=10&sort=distance&order=asc&q=null&query=${colonia2}&latitud=${latitud}&longitud=${longitud}&estado=${estado}&municipio=${municipio}&colonia=${colonia[1]}&tipo=${tipo}&cuartos=${cuartos}&banios=${banios}&estacionamiento=${estacionamientos}
         $table = "inmuebles";
         $latitud = $casa["latitud"];
         $longitud = $casa["longitud"];
@@ -334,7 +285,7 @@ class OpinionDeValorTranscription
         }
 
         // Por metros totales
-        if ($propiedadComparando['metros_totales'] <= $propiedadBase['metrosTerreno']) {
+        if ($propiedadComparando['metros_totales'] <= $propiedadBase['caracteristicas']['metrosTerreno']) {
 
             $similitud = $similitud + $metrosSimilitud;
         } else {
@@ -458,7 +409,6 @@ class OpinionDeValorTranscription
         //     }else if(anios == 1){
         //         depreciacion = 0.05
         // }
-
         if ($estadoPropiedad === "muy bueno") {
             $depreciacion = 0.9968;
         } else if ($estadoPropiedad === "bueno") {
@@ -468,7 +418,6 @@ class OpinionDeValorTranscription
         } else if ($estadoPropiedad === "malo") {
             $depreciacion = 0.7852;
         }
-
         return $depreciacion;
     }
 

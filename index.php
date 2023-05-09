@@ -1,10 +1,11 @@
 <?php 
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: Origin, Content-Type, Authorization, Accept, Access-Control-Request-Method, X-Requested-With"); // X-API-KEY, 
+header("Access-Control-Allow-Headers: Origin, Content-Type, Authorization, Accept, Access-Control-Request-Method, X-Requested-With, Referer");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-header("Allow: GET, POST, OPTIONS, PUT, DELETE");
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Max-Age: 2400');
+
+
 header("Content-Type: application/json; charset=utf-8");
 
 date_default_timezone_set('America/Mexico_City');
@@ -66,6 +67,24 @@ if (isset($uri)) {
                 $data = OpinionDeValor::generateOpinon($entityBody);
                 $code = 200;
             }
+            if ($request=='GET') {
+                if (isset($uri[3])) {
+                    $data = OpinionDeValor::getOpinion($uri[3]);
+                    $code = 200;
+                    http_response_code(200);
+                }else{
+                    $data = ['message'=>'Try with the {id} , or read the documentation.'];
+                    $code = 400;
+                    http_response_code(400);
+                }
+            }
+            break;
+        case 'itaee':
+            $data = 'itaee';
+            break;
+        case 'test':
+            $data = json_decode(file_get_contents('php://input'));
+            $code = 200;
             break;
         default:
         $data = 'admin_api';

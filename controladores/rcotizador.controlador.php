@@ -373,20 +373,20 @@ class ControladorCotizador
         /**
          * ! NO EXISTE CITI EN SIMULADORES
          */
-        // $curlCitibanamex = curl_init();
-        // curl_setopt_array($curlCitibanamex, [
-        //     CURLOPT_URL => $apiEndpoint."?fechaNacimiento=1970-01-01&producto=0&plazo=". $data['montos']['plazo']/12 ."&valorVivienda=".$valorViviendaCitibanamex."&valorProyecto=&valorViviendaAdicional=&porcentajeNotarial=6&tipoTaza=2&sueldo=".$sueldoReqCitibanamex."&subcuenta=&infonavit=&montoCredito=".$montoCreditoCitibanamex."&estado=TLAXCALA&pagos=0&terreno=&construccion=&adeudoActual=&importeCredito=0&presupuestoRemodelacion=",
-        //     CURLOPT_RETURNTRANSFER => true,
-        //     CURLOPT_ENCODING => "",
-        //     CURLOPT_MAXREDIRS => 10,
-        //     CURLOPT_TIMEOUT => 30,
-        //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        //     CURLOPT_CUSTOMREQUEST => "GET",
-        //     CURLOPT_POSTFIELDS => "",
-        // ]);
-        // $responseCitibanamex = curl_exec($curlCitibanamex);
-        // $errCitibanamex = curl_error($curlCitibanamex);
-        // curl_close($curlCitibanamex);
+        $curlCitibanamex = curl_init();
+        curl_setopt_array($curlCitibanamex, [
+            CURLOPT_URL => $apiEndpoint."?fechaNacimiento=1970-01-01&producto=0&plazo=". $data['montos']['plazo']/12 ."&valorVivienda=".$valorViviendaCitibanamex."&valorProyecto=&valorViviendaAdicional=&porcentajeNotarial=6&tipoTaza=2&sueldo=".$sueldoReqCitibanamex."&subcuenta=&infonavit=&montoCredito=".$montoCreditoCitibanamex."&estado=TLAXCALA&pagos=0&terreno=&construccion=&adeudoActual=&importeCredito=0&presupuestoRemodelacion=",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_POSTFIELDS => "",
+        ]);
+        $responseCitibanamex = curl_exec($curlCitibanamex);
+        $errCitibanamex = curl_error($curlCitibanamex);
+        curl_close($curlCitibanamex);
 
         $curlHeyBanco = curl_init();
         curl_setopt_array($curlHeyBanco, [
@@ -510,19 +510,19 @@ class ControladorCotizador
                 "sueldoParaGastos" => $sueldoParaGastosSantander
             );
 
-            // $jsCitibanamex = json_decode($responseCitibanamex);
-            // $mensualidadPromedioCitibanamex = $jsCitibanamex->citi->montos->mensualidadPromedio ?? 0;
-            // $sueldoParaGastosCitibanamex = $sueldoReqCitibanamex-$mensualidadPromedioCitibanamex;
+            $jsCitibanamex = json_decode($responseCitibanamex);
+            $mensualidadPromedioCitibanamex = $jsCitibanamex->citi->montos->mensualidadPromedio ?? 0;
+            $sueldoParaGastosCitibanamex = $sueldoReqCitibanamex-$mensualidadPromedioCitibanamex;
             $citibanamex = array(
                 "tasa" => $tasaCitibanamex,
                 "pagoXMil" => $pagoXMilCitibanamex,
                 "sueldoReq" => $sueldoReqCitibanamex,
                 "montoCredito" => $montoCreditoCitibanamex,
                 "valorVivienda" => $valorViviendaCitibanamex,
-                // "pagoTotalSinGastosIniciales" => $jsCitibanamex->citi->montos->pagoTotalMensualidades ?? 0,
-                // "mensualidaPromedio" => $mensualidadPromedioCitibanamex,
-                // "aforo" => $jsCitibanamex->citi->montos->aforo ?? 0,
-                // "sueldoParaGastos" => $sueldoParaGastosCitibanamex
+                "pagoTotalSinGastosIniciales" => $jsCitibanamex->citi->montos->pagoTotalMensualidades ?? 0,
+                "mensualidaPromedio" => $mensualidadPromedioCitibanamex,
+                "aforo" => $jsCitibanamex->citi->montos->aforo ?? 0,
+                "sueldoParaGastos" => $sueldoParaGastosCitibanamex
             );
 
             $jsHeyBanco = json_decode($responseHeyBanco);

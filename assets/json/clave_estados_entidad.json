@@ -1,0 +1,162 @@
+[
+    {
+        "clave": 1,
+        "slug": "aguascalientes",
+        "entidad": "Aguascalientes"
+    },
+    {
+        "clave": 2,
+        "slug": "baja_california",
+        "entidad": "Baja California"
+    },
+    {
+        "clave": 3,
+        "slug": "baja_california_sur",
+        "entidad": "Baja California Sur"
+    },
+    {
+        "clave": 4,
+        "slug": "campeche",
+        "entidad": "Campeche"
+    },
+    {
+        "clave": 7,
+        "slug": "chiapas",
+        "entidad": "Chiapas"
+    },
+    {
+        "clave": 8,
+        "slug": "chihuahua",
+        "entidad": "Chihuahua"
+    },
+    {
+        "clave": 9,
+        "slug": "ciudad_de_mexico",
+        "entidad": "Ciudad de Mexico"
+    },
+    {
+        "clave": 5,
+        "slug": "coahuila",
+        "entidad": "Coahuila"
+    },
+    {
+        "clave": 6,
+        "slug": "colima",
+        "entidad": "Colima"
+    },
+    {
+        "clave": 10,
+        "slug": "durango",
+        "entidad": "Durango"
+    },
+    {
+        "clave": 15,
+        "slug": "estado_de_mexico",
+        "entidad": "Estado de Mexico"
+    },
+    {
+        "clave": 11,
+        "slug": "guanajuato",
+        "entidad": "Guanajuato"
+    },
+    {
+        "clave": 12,
+        "slug": "guerrero",
+        "entidad": "Guerrero"
+    },
+    {
+        "clave": 13,
+        "slug": "hidalgo",
+        "entidad": "Hidalgo"
+    },
+    {
+        "clave": 14,
+        "slug": "jalisco",
+        "entidad": "Jalisco"
+    },
+    {
+        "clave": 16,
+        "slug": "michoacan",
+        "entidad": "Michoacan"
+    },
+    {
+        "clave": 17,
+        "slug": "morelos",
+        "entidad": "Morelos"
+    },
+    {
+        "clave": 18,
+        "slug": "nayarit",
+        "entidad": "Nayarit"
+    },
+    {
+        "clave": 19,
+        "slug": "nuevo_leon",
+        "entidad": "Nuevo Leon"
+    },
+    {
+        "clave": 20,
+        "slug": "oaxaca",
+        "entidad": "Oaxaca"
+    },
+    {
+        "clave": 21,
+        "slug": "puebla",
+        "entidad": "Puebla"
+    },
+    {
+        "clave": 22,
+        "slug": "queretaro",
+        "entidad": "Queretaro"
+    },
+    {
+        "clave": 23,
+        "slug": "quintana_roo",
+        "entidad": "Quintana Roo"
+    },
+    {
+        "clave": 24,
+        "slug": "san_luis_potosi",
+        "entidad": "San Luis Potosi"
+    },
+    {
+        "clave": 25,
+        "slug": "sinaloa",
+        "entidad": "Sinaloa"
+    },
+    {
+        "clave": 26,
+        "slug": "sonora",
+        "entidad": "Sonora"
+    },
+    {
+        "clave": 27,
+        "slug": "tabasco",
+        "entidad": "Tabasco"
+    },
+    {
+        "clave": 28,
+        "slug": "tamaulipas",
+        "entidad": "Tamaulipas"
+    },
+    {
+        "clave": 29,
+        "slug": "tlaxcala",
+        "entidad": "Tlaxcala"
+    },
+    {
+        "clave": 30,
+        "slug": "veracruz",
+        "entidad": "Veracruz"
+    },
+    {
+        "clave": 31,
+        "slug": "yucatan",
+        "entidad": "Yucatán"
+    },
+    {
+        "clave": 32,
+        "slug": "zacatecas",
+        "entidad": "Zacatecas"
+    }
+]

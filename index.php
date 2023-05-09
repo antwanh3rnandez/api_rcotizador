@@ -18,6 +18,7 @@ require_once('vistas/JsonExporter.php');
 require_once('controladores/Security.controller.php');
 require_once('controladores/opinion.controlador.php');
 require_once('controladores/rcotizador.controlador.php');
+require_once('controladores/itaee.controlador.php');
 
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -80,7 +81,8 @@ if (isset($uri)) {
             }
             break;
         case 'itaee':
-            $data = 'itaee';
+            $data = Itaee::obtener(file_get_contents('php://input'));
+            $code = 200;
             break;
         case 'test':
             $data = json_decode(file_get_contents('php://input'));

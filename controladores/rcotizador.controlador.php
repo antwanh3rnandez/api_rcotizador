@@ -469,13 +469,13 @@ class ControladorCotizador
                 "valorVivienda" => $valorViviendaScotiabank,
                 "pagoTotalSinGastosIniciales" => $jsScotiabank->scotiabank->montos->pagoTotalMensualidades ?? 0,
                 "mensualidaPromedio" => $mensualidadPromedioScotiabank,
-                "aforo" => $jsScotiabank->scotiabank->montos->aforo ?? 0 * 100,
+                "aforo" => $jsScotiabank->scotiabank->montos->aforo * 100 ?? 0,
                 "sueldoParaGastos" => $sueldoParaGastosScotiabank
             );
 
             $jsHsbc = json_decode($responseHsbc);
             $mensualidadPromedioHsbc = $jsHsbc->hsbc->montos->mensualidadPromedio ?? 0;
-            $sueldoParaGastosHsbc = $sueldoReqHsbc-$mensualidadPromedioHsbc;
+            $sueldoParaGastosHsbc = $data['montos']['sueldoNeto']-$mensualidadPromedioHsbc;
             $hsbc = array(
                 "tasa" => $tasaHsbc,
                 "pagoXMil" => $pagoXMilHsbc,
@@ -488,7 +488,7 @@ class ControladorCotizador
                 "valorVivienda" => $valorViviendaHsbc,
                 "pagoTotalSinGastosIniciales" => $jsHsbc->hsbc->montos->pagoTotalMensualidades ?? 0,
                 "mensualidaPromedio" => $mensualidadPromedioHsbc,
-                "aforo" => $jsHsbc->hsbc->montos->aforo ?? 0 * 100,
+                "aforo" => $jsHsbc->hsbc->montos->aforo * 100 ?? 0,
                 "sueldoParaGastos" => $sueldoParaGastosHsbc
             );
 
@@ -506,7 +506,7 @@ class ControladorCotizador
                 "valorDestructible" => $valorDestructibleSantander,
                 "pagoTotalSinGastosIniciales" => $jsSantander->santander->montos->pagoTotalMensualidades ?? 0,
                 "mensualidaPromedio" => $mensualidadPromedioSantander,
-                "aforo" => $jsSantander->santander->montos->aforo ?? 0 * 100,
+                "aforo" => $jsSantander->santander->montos->aforo * 100 ?? 0,
                 "sueldoParaGastos" => $sueldoParaGastosSantander
             );
 

@@ -87,6 +87,35 @@ class OpinionDeValor{
 
     }
 
+    public static function getOpinionsByUser($idUser)
+    {
+        $pdo = Conexion::conectar();
+        $stmt = $pdo->prepare("SELECT * FROM opiniones WHERE user_id = :user_id");
+        $stmt->bindParam(":user_id", $idUser, PDO::PARAM_INT);
+        $stmt->execute();
+        $opinions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!$opinions) {
+            return 'Error: No se encontro la opinion';
+        }
+
+        $export = [];
+        foreach ($opinions as $key => $opinion) {
+
+            $requestArr = json_decode($opinion['request'], true);
+            $responseArr = json_decode($opinion['response'], true);
+
+            $holdOpinion['idOpinion'] = intval($opinion['id']);
+            $holdOpinion['direccion'] = $responseArr['propiedad']['direccion'];
+            $holdOpinion['precio'] = $responseArr['precio']['precioTotalDepreciado'];
+            $holdOpinion['fecha'] = $opinion['created_at'];
+
+            array_push($export, $holdOpinion);
+        }
+
+        return $export;
+    }
+
 }
 
 class OpinionDeValorTranscription

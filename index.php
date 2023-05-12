@@ -19,6 +19,8 @@ require_once('controladores/Security.controller.php');
 require_once('controladores/opinion.controlador.php');
 require_once('controladores/rcotizador.controlador.php');
 require_once('controladores/itaee.controlador.php');
+require_once('controladores/economia.controlador.php');
+require_once('controladores/nse.controlador.php');
 
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -70,6 +72,12 @@ if (isset($uri)) {
             }
             if ($request=='GET') {
                 if (isset($uri[3])) {
+                    if ($uri[3]=='user') {
+                        $data = OpinionDeValor::getOpinionsByUser($uri[4]);
+                        $code = 200;
+                        http_response_code(200);
+                        break;
+                    }
                     $data = OpinionDeValor::getOpinion($uri[3]);
                     $code = 200;
                     http_response_code(200);
@@ -82,6 +90,26 @@ if (isset($uri)) {
             break;
         case 'itaee':
             $data = Itaee::obtener(file_get_contents('php://input'));
+            $code = 200;
+            break;
+        case 'economy':
+            $data = Economia::getEconomy($uri[3],$uri[4]);
+            $code = 200;
+            break;
+        case 'nse':
+
+            if ($request=='GET') {
+                if (isset($uri[3])) {
+                    if ($uri[3]=='localidades') {
+                        $entityBody = file_get_contents('php://input');
+                        $data = NSE::getLocalidades($entityBody);
+                    }
+                }else{
+                    $data = 'full';
+                }
+            }else{
+                $data = 'nse';
+            }
             $code = 200;
             break;
         case 'test':

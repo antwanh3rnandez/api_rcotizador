@@ -41,7 +41,7 @@ class ControladorCotizador
         $tasaSantander = 11.55;
         $comisionSantander = 406;
 
-        $tasaCitibanamex = 9.95;
+        $tasaCitibanamex = 10.50;
 
         $tasaHeybanco = 11;
         $comisionHeyBanco = 250;
@@ -213,30 +213,81 @@ class ControladorCotizador
         /**
          * ! CITIBANAMEX ==============================================================================
          */
-        $pagoXMilCitibanamex = round(ceil(Payments::annuity(($tasaCitibanamex / 100) / 12, $data['montos']['plazo'], -1000) * 100) / 100, 2);
+        // $pagoXMilCitibanamex = round(ceil(Payments::annuity(($tasaCitibanamex / 100) / 12, $data['montos']['plazo'], -1000) * 100) / 100, 2);
         $sueldoReqCitibanamex = ($data['montos']['sueldoBruto']-$data['montos']['deudas']); 
-        $factorSueldoCitibanamex = 0.45;
-        $sueldoXfactorCitibanamex = $sueldoReqCitibanamex * $factorSueldoCitibanamex;
-        $factorSVCitibanamex = 0.0456032326342121;
-        $factorSDCitibanamex = 0.0288628054646912;
-        $seguroVidaCitibanamex = $sueldoXfactorCitibanamex * $factorSVCitibanamex;
-        $seguroDaniosCitibanamex = $sueldoXfactorCitibanamex * $factorSDCitibanamex;
-        $sueldoBaseCitibanamex = $sueldoXfactorCitibanamex-$seguroVidaCitibanamex-$seguroDaniosCitibanamex;
-        $montoCreditoCitibanamex = ($sueldoBaseCitibanamex * 1000) / $pagoXMilCitibanamex;
-        $valorViviendaCitibanamex = $montoCreditoCitibanamex / 0.90;
-
-        if ($valorViviendaCitibanamex > 8000000) {
-            $factorRestanteCitibanamex = 8000000;
-            $restanteValorViviendaCitibanamex = $valorViviendaCitibanamex-$factorRestanteCitibanamex;
-            $multiValorViviendaCitibanamex = $restanteValorViviendaCitibanamex * 0.4;
-            $restanteFactorRestanteCitibanamex = $factorRestanteCitibanamex * 0.9;
-
-            $lineaCreditoCitibanamex = ($valorViviendaCitibanamex >= 8000000) ? ($restanteFactorRestanteCitibanamex + $multiValorViviendaCitibanamex) : ($valorViviendaCitibanamex * 0.9);
-            $postLineaCreditoCitibanamex = $lineaCreditoCitibanamex * $pagoXMilCitibanamex / 1000;
-            $seguroVidaCitibanamex = $lineaCreditoCitibanamex*$factorSVCitibanamex;
-            $maxValueCitibanamex = max(($valorViviendaCitibanamex * 0.80) * 0.0003, $lineaCreditoCitibanamex * 0.0003);
-            $sueldoBaseCitibanamex = $postLineaCreditoCitibanamex-$seguroVidaCitibanamex-$maxValueCitibanamex;
+        $factorSVCitibanamex = 0.00047400;
+        $factorSDCitibanamex = 0.0003;
+        $aforoCitibanamex = 0.9;
+        
+        if ($data['montos']['plazo'] == 240) {
+            $plazo = array(
+                //     S. Inf.      S. Sup.      Factor   Tasa   Plazo  PXM
+                array(    1.0000, 21527.0000, 2.394394394, 10.50, 240, 9.99, 900000.00, 1499999.99),
+                array(21528.0000, 34645.6667, 2.394394394, 10.50, 240, 9.99, 900000.00, 1499999.99),
+                array(34646.6667, 166304.0000, 2.401016401, 9.95, 240, 9.62, 1500000.00, 7200000.00),
+                array(166304.0100, 179999.9900, 2.401016401, 9.95, 240, 9.62, 7200001.00, 7333333.33),
+                array(180000.00, 600000.00, 2.401016401, 9.50, 240, 9.33)
+            );
+        }else if($data['montos']['plazo'] == 180){
+            $plazo = array(
+                //     S. Inf.      S. Sup.      Factor   Tasa   Plazo  PXM
+                array(    1.0000, 23667.0000, 2.377737593, 10.50, 180, 11.06, 900000.00, 1499999.99),
+                array(23668.0000, 39446.6664, 2.377737593, 10.50, 180, 11.06, 900000.00, 1499999.99),
+                array(39447.6664, 183904.0000, 2.382669983, 9.95, 180, 10.72, 1500000.00, 7200000.00),
+                array(183904.0100, 204337.7778, 2.382669983, 9.95, 180, 10.72, 7200001.00, 9000000.00),
+                array(204338.78, 600000.00, 2.382669983, 9.50, 180, 10.45)
+            );
+        }else if ($data['montos']['plazo'] == 120) {
+            $plazo = array(
+                //     S. Inf.      S. Sup.      Factor   Tasa   Plazo  PXM
+                array(    1.0000, 23667.0000, 2.34962963, 10.50, 120, 13.50, 900000.00, 1499999.99),
+                array(23668.0000, 47579.9997, 2.34962963, 10.50, 120, 13.50, 900000.00, 1499999.99),
+                array(47580.9997, 223424.0000, 2.352624042, 9.95, 120, 13.19, 1500000.00, 7200000.00),
+                array(223424.0100, 248248.8889, 2.352624042, 9.95, 120, 13.19, 7200001.00, 9000000.00),
+                array(248249.89, 600000.00, 2.352624042, 9.50, 120, 12.94)
+            );
         }
+
+        foreach ($plazo as $i => $item) {
+            $desde = $item[0];
+            $hasta = $item[1];
+            $factorCitibanamex = $item[2];
+            $tasaCitibanamex = $item[3];
+            $plazoCitibanamex = $item[4];
+            // $pagoXMilCitibanamex = $item[5];
+            $pagoXMilCitibanamex = round(ceil(Payments::annuity(($tasaCitibanamex / 100) / 12, $plazoCitibanamex, -1000) * 100) / 100, 2);
+            
+            //Verificar si el sueldo está dentro del rango del subarreglo actual
+            if ($sueldoReqCitibanamex >= $desde && $sueldoReqCitibanamex <= $hasta) {
+                
+                $base1 = $sueldoReqCitibanamex/$factorCitibanamex;
+                $base1X1000 = $base1*1000;
+                $montoCreditoCitibanamex = $base1X1000/$pagoXMilCitibanamex;
+                $valorViviendaCitibanamex = $montoCreditoCitibanamex / $aforoCitibanamex;
+
+                $creditoTopado = (($valorViviendaCitibanamex-8000000) * 0.4) + 7200000;
+                $base2 = ($creditoTopado / 1000) * $pagoXMilCitibanamex;
+                $base3 = $base1-$base2;
+                $creditoAdicional = ($base3 < 0) ? 0 : ($base3 * 1000 / $pagoXMilCitibanamex * 2.1312);
+                $topeCredito = $montoCreditoCitibanamex;
+                $montoCreditoCitibanamex = $creditoAdicional+$topeCredito;
+                $valorViviendaCitibanamex = $montoCreditoCitibanamex/0.9;
+
+                if ($valorViviendaCitibanamex >= 8000000) {
+                    $valorTopevivienda = 8000000;
+                    $diferencia = $valorViviendaCitibanamex-$valorTopevivienda;
+                    $diferenciaX04 = $diferencia*0.4;
+                    $montoTopadoCredito = $valorTopevivienda*0.9;
+                    $montoCreditoCitibanamex = $montoTopadoCredito + $diferenciaX04;
+                } else {
+                    $montoCreditoCitibanamex = $valorViviendaCitibanamex * 0.9;
+                }
+
+                break; // Salir del bucle si se encuentra el rango correspondiente
+            }
+        }
+
+        
         
         /**
          * ! HEYBANCO  ==============================================================================

@@ -108,8 +108,29 @@ class Economia{
 
         }
 
+        $destinos = [];
+        $destinos['totalDestinos'] = 0;
+        foreach ($destinosDataSet as $key => $destino) {
+            $destinos['totalDestinos'] += $destino['Trade Value'];
+        }
 
-        return $ventas;
+        foreach ($destinosDataSet as $key => $destino) {
+            $rojo = rand(50, 205);
+            $verde = rand(50, 205);
+            $azul = rand(50, 205);
+            // Concatena los valores de los componentes en formato hexadecimal
+            $color = sprintf("#%02x%02x%02x", $rojo, $verde, $azul);
+
+            $percent = ($destino['Trade Value'] * 100) / $destinos['totalDestinos'];
+            $destinos['destinos'][] = [
+                'title' => $destino['Country'],
+                'value' => $destino['Trade Value'],
+                'percent' => $percent,
+                'color' => $color
+            ];
+        }
+        $export = array_merge($ventas, $destinos);
+        return $export;
     }
 
 }

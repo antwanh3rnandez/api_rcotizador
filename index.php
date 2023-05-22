@@ -1,4 +1,4 @@
-<?php 
+<?php
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Origin, Content-Type, Authorization, Accept, Access-Control-Request-Method, X-Requested-With, Referer");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
@@ -21,10 +21,12 @@ require_once('controladores/rcotizador.controlador.php');
 require_once('controladores/itaee.controlador.php');
 require_once('controladores/economia.controlador.php');
 require_once('controladores/nse.controlador.php');
+require_once('controladores/turistas.controlador.php');
+require_once('controladores/inventario.controlador.php');
 
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$uri = explode( '/', $uri );
+$uri = explode('/', $uri);
 $request = $_SERVER['REQUEST_METHOD'];
 
 $security = new SecurityController();
@@ -46,33 +48,33 @@ if (isset($uri)) {
 
     switch ($uri[2]) {
         case 'rCotizador':
-            if ($request=='POST') {
+            if ($request == 'POST') {
                 $entityBody = file_get_contents('php://input');
                 $data = ControladorCotizador::ctrRecibirDatos($entityBody);
                 $code = 200;
             }
-            if ($request=='GET') {
+            if ($request == 'GET') {
                 if (isset($uri[3])) {
                     // $data = ControladorCotizador::ctrEnviarDatos($uri);
-                    $data = ['message'=>'Try with the {id} , or read the documentation.'];
+                    $data = ['message' => 'Try with the {id} , or read the documentation.'];
                     $code = 200;
                     http_response_code(200);
-                }else{
-                    $data = ['message'=>'Try with the {id} , or read the documentation.'];
+                } else {
+                    $data = ['message' => 'Try with the {id} , or read the documentation.'];
                     $code = 400;
                     http_response_code(400);
                 }
             }
             break;
         case 'opinion':
-            if ($request=='POST') {
+            if ($request == 'POST') {
                 $entityBody = file_get_contents('php://input');
                 $data = OpinionDeValor::generateOpinon($entityBody);
                 $code = 200;
             }
-            if ($request=='GET') {
+            if ($request == 'GET') {
                 if (isset($uri[3])) {
-                    if ($uri[3]=='user') {
+                    if ($uri[3] == 'user') {
                         $data = OpinionDeValor::getOpinionsByUser($uri[4]);
                         $code = 200;
                         http_response_code(200);
@@ -81,8 +83,8 @@ if (isset($uri)) {
                     $data = OpinionDeValor::getOpinion($uri[3]);
                     $code = 200;
                     http_response_code(200);
-                }else{
-                    $data = ['message'=>'Try with the {id} , or read the documentation.'];
+                } else {
+                    $data = ['message' => 'Try with the {id} , or read the documentation.'];
                     $code = 400;
                     http_response_code(400);
                 }
@@ -93,33 +95,42 @@ if (isset($uri)) {
             $code = 200;
             break;
         case 'economy':
-            $data = Economia::getEconomy($uri[3],$uri[4]);
+            $data = Economia::getEconomy($uri[3], $uri[4]);
             $code = 200;
             break;
         case 'nse':
-
-            if ($request=='GET') {
-                if (isset($uri[3])) {
-                    if ($uri[3]=='localidades') {
-                        $entityBody = file_get_contents('php://input');
-                        $data = NSE::getLocalidades($entityBody);
-                    }
-                }else{
-                    $data = 'full';
-                }
-            }else{
-                $data = 'nse';
-            }
+            $entityBody = file_get_contents('php://input');
+            $data = NSE::getNse($entityBody);
             $code = 200;
+            break;
+        case 'turistas':
+            $entityBody = file_get_contents('php://input');
+            $data = Turistas::obtener($entityBody);
+            $code = 200;
+            break;
+        case 'inventario':
+            if (isset($uri[3])) {
+                if ($uri[3] == 'oferta') {
+                    $entityBody = file_get_contents('php://input');
+                    $data = Inventario::oferta($entityBody);
+                    $code = 200;
+                    http_response_code(200);
+                    break;
+                }
+            } else {
+                $data = ['message' => 'Read the documentation.'];
+                $code = 400;
+                http_response_code(400);
+            }
             break;
         case 'test':
             $data = json_decode(file_get_contents('php://input'));
             $code = 200;
             break;
         default:
-        $data = 'admin_api';
-        $code = 200;
-        break;
+            $data = 'admin_api';
+            $code = 200;
+            break;
     }
 }
 

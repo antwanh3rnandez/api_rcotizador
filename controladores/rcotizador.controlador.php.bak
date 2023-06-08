@@ -66,80 +66,9 @@ class ControladorCotizador
         /**
          * ! SCOTIABANK  ==============================================================================
          */
-
-        $tipoScotiabank = "Fijo";
-        $concatenarTipoPlazoScotiabank = $tipoScotiabank.$data['montos']['plazo'];
-
-        $tablaScotiabank = array(
-            array("Creciente240", "Creciente", 240, 11.50),
-            array("Creciente180", "Creciente", 180, 11.50),
-            array("Creciente120", "Creciente", 120, 11.50),
-            array("Fijo240", "Fijo", 240, 11.80),
-            array("Fijo180", "Fijo", 180, 11.60),
-            array("Fijo120", "Fijo", 120, 11.30)
-        );
-
-        foreach ($tablaScotiabank as $filaScotiabank) {
-            if ($filaScotiabank[0] == $concatenarTipoPlazoScotiabank) {
-                $tasaScotiabank = $filaScotiabank[3];
-                break;
-            }
-        }
-
-        $concatenarTipoPlazoScotiabank2 = $concatenarTipoPlazoScotiabank.($tasaScotiabank/100);
-
-        $tablaScotiabank2 = array(
-            //      Tipo                Tipo     Plazo  Tasa  PXM    ??
-            array("Creciente2400.1", "Creciente", 240, 10.00, 8.70, 2.60),
-            array("Creciente2400.105", "Creciente", 240, 10.50, 9.07, 2.40),
-            array("Creciente2400.11", "Creciente", 240, 11.00, 9.54, 2.00),
-            array("Creciente2400.115", "Creciente", 240, 11.50, 9.92, 1.70),
-            array("Creciente2400.12", "Creciente", 240, 12.00, 10.38, 1.20),
-            array("Fijo2400.118", "Fijo", 240, 11.80, 11.00, 0),
-            array("Creciente1800.1", "Creciente", 180, 10.00, 9.78, 2.60),
-            array("Creciente1800.105", "Creciente", 180, 10.50, 10.15, 2.40),
-            array("Creciente1800.11", "Creciente", 180, 11.00, 10.61, 2.00),
-            array("Creciente1800.115", "Creciente", 180, 11.50, 11.00, 1.70),
-            array("Creciente1800.12", "Creciente", 180, 12.00, 11.43, 1.20),
-            array("Fijo1800.116", "Fijo", 180, 11.60, 11.86, 0),
-            array("Creciente1200.1", "Creciente", 120, 10.00, 12.24, 0.03),
-            array("Creciente1200.105", "Creciente", 120, 10.50, 12.60, 0.02),
-            array("Creciente1200.11", "Creciente", 120, 11.00, 13.05, 0.02),
-            array("Creciente1200.115", "Creciente", 120, 11.50, 13.43, 0.02),
-            array("Creciente1200.12", "Creciente", 120, 12.00, 13.85, 0.01),
-            array("Fijo1200.113", "Fijo", 120, 11.30, 14.05, 0)
-        );
-
-        foreach ($tablaScotiabank2 as $filaScotiabank2) {
-            if ($filaScotiabank2[0] == $concatenarTipoPlazoScotiabank2) {
-                $pagoXMilScotiabank = $filaScotiabank2[4];
-                break;
-            }
-        }
-
-        $tablaScotiabank3 = array(
-            array(1, "Adquisición Tradicional", "1.25%", "3%", "95%", "10,000", "250,000", "15,000,000.00", "400,000", 55),
-            array(2, "Adquisición con Apoyo Infonavit", "0.75%", "0%", "95%", "7,500", "250,000", "15,000,000.00", "400,000", 55),
-            array(3, "Cofinavit", "0.75%", "0%", "95%", "7,500", "120,000", "15,000,000.00", "300,000", 55),
-            array(4, "Pasivo Hipotecario", "1.5%", "3%", "95%", "10,000", "125,000", "15,000,000.00", "-", 60),
-            array(5, "Pasivo Hipotecario con Apoyo Infonavit", "1.5%", "3%", "95%", "10,000", "125,000", "15,000,000.00", "-", 65),
-            array(6, "Liquidez Vivienda", "1.25%", "3%", "95%", "20,000", "150,000", "2,500,000.00", "1,000,000", 55),
-            array(7, "CI+CB Cofinavit", "1.25%", "0%", "90%", "10,000", "250,000", "15,000,000.00", "300,000", 55)
-        );
-
-        foreach ($tablaScotiabank3 as $filaScotiabank3) {
-            if ($filaScotiabank3[0] == 1) {
-                $factorSueldoScotiabank = $filaScotiabank3[9] / 100;
-                break;
-            }
-        }
-        
-        
-        
-
-        // $pagoXMilScotiabank = 11.00;
+        $pagoXMilScotiabank = 11.00;
         $sueldoReqScotiabank = ($data['montos']['sueldoBruto']-$data['montos']['deudas']); 
-        // $factorSueldoScotiabank = 55 / 100;
+        $factorSueldoScotiabank = 55 / 100;
         $factorConversionScotiabank = 1.09630360355133;
         $factorSVScotiabank = 0.0559160729597832;
         $factorSDScotiabank = 0.0319278447646168;
@@ -605,8 +534,7 @@ class ControladorCotizador
                 "sueldoConComision" => $sueldoConComisionHsbc,
                 "seguroVida" => $seguroVidaHsbc,
                 "seguroDanios" => $seguroDaniosHsbc,
-                // "sueldoReq" => $sueldoReqHsbc,
-                "sueldoReq" => $data['montos']['sueldoNeto']-$data['montos']['deudas'],
+                "sueldoReq" => $sueldoReqHsbc,
                 "montoCredito" => $montoCreditoHsbc,
                 "valorVivienda" => $valorViviendaHsbc,
                 "pagoTotalSinGastosIniciales" => $jsHsbc->hsbc->montos->pagoTotalMensualidades ?? 0,
@@ -623,8 +551,7 @@ class ControladorCotizador
                 "pagoXMil" => $pagoXMilSantander,
                 "seguroVida" => $seguroVidaSantander,
                 "seguroDanios" => $seguroDaniosSantander,
-                // "sueldoReq" => $sueldoReqSantander,
-                "sueldoReq" => $data['montos']['sueldoBruto']-$data['montos']['deudas'],
+                "sueldoReq" => $sueldoReqSantander,
                 "montoCredito" => $montoCreditoSantander,
                 "valorVivienda" => $valorViviendaSantander,
                 "valorDestructible" => $valorDestructibleSantander,

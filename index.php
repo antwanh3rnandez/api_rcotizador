@@ -46,7 +46,7 @@ if (true) {
 
 if (isset($uri)) {
 
-    switch ($uri[2]) {
+    switch ($uri[1]) {
         case 'rCotizador':
             if ($request == 'POST') {
                 $entityBody = file_get_contents('php://input');
@@ -54,7 +54,7 @@ if (isset($uri)) {
                 $code = 200;
             }
             if ($request == 'GET') {
-                if (isset($uri[3])) {
+                if (isset($uri[2])) {
                     // $data = ControladorCotizador::ctrEnviarDatos($uri);
                     $data = ['message' => 'Try with the {id} , or read the documentation.'];
                     $code = 200;
@@ -73,14 +73,14 @@ if (isset($uri)) {
                 $code = 200;
             }
             if ($request == 'GET') {
-                if (isset($uri[3])) {
-                    if ($uri[3] == 'user') {
-                        $data = OpinionDeValor::getOpinionsByUser($uri[4]);
+                if (isset($uri[2])) {
+                    if ($uri[2] == 'user') {
+                        $data = OpinionDeValor::getOpinionsByUser($uri[3]);
                         $code = 200;
                         http_response_code(200);
                         break;
                     }
-                    $data = OpinionDeValor::getOpinion($uri[3]);
+                    $data = OpinionDeValor::getOpinion($uri[2]);
                     $code = 200;
                     http_response_code(200);
                 } else {
@@ -95,7 +95,7 @@ if (isset($uri)) {
             $code = 200;
             break;
         case 'economy':
-            $data = Economia::getEconomy($uri[3], $uri[4]);
+            $data = Economia::getEconomy($uri[2], $uri[3]);
             $code = 200;
             break;
         case 'nse':
@@ -109,8 +109,8 @@ if (isset($uri)) {
             $code = 200;
             break;
         case 'inventario':
-            if (isset($uri[3])) {
-                if ($uri[3] == 'oferta') {
+            if (isset($uri[2])) {
+                if ($uri[2] == 'oferta') {
                     $entityBody = file_get_contents('php://input');
                     $data = Inventario::oferta($entityBody);
                     $code = 200;
